@@ -27,15 +27,24 @@ pub fn samalignment(pathfasta: &str, pathfastq: &str) -> Result<String, Box<dyn 
         .expect("command failed");
     let _ = Command::new("samtools").arg("index").arg("aligned.bam");
 
-    let _ = Command::new
+    let _ = Command::new("bcftools")
+        .arg("mpileup")
+        .arg("-Ou")
+        .arg("-f")
+        .arg(pathfasta)
+        .arg("--max-depth")
+        .arg("5000")
+        .arg("aligned.bam")
+        .arg("|")
+        .arg("bcftools")
+        .arg("call")
+        .arg("-mv")
+        .arg("-Oz")
+        .arg("-o")
+        .arg("variant.vcf.gz")
+        .output()
+        .expect("failed");
+
+    let _ = Command::new("bftools").arg("index").arg("variant.vcf.gz");
     Ok("Sam alignment have been parsed".to_string())
 }
-
-
-/*
-# 2. Call polymorphic sites across the mixed sample
-# Note: --ploidy 2 (or higher) ensures mixed alleles are captured in the VCF
-bcftools mpileup -Ou -f $REF --max-depth 5000 aligned.bam | \
-    bcftools call -mv -Oz -o variants.vcf.gz
-bcftools index variants.vcf.gz
- */

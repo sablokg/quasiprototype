@@ -17,29 +17,5 @@ fn main() {
     let repgenerate = fontgenerate.convert("quasiprototype");
     println!("{}", repgenerate.unwrap());
     let argparse = CommandParse::parse();
-    match &argparse.command {
-        Commands::Classifier {
-            filepathinput,
-            qualityinput,
-            genotypeinput,
-            thread,
-        } => {
-            let pool = rayon::ThreadPoolBuilder::new()
-                .num_threads(thread.parse::<usize>().unwrap())
-                .build()
-                .unwrap();
-            pool.install(|| {
-                let command_logistic =
-                    logisticclassification(filepathinput, qualityinput, genotypeinput).unwrap();
-                let command_knn =
-                    knnclassification(filepathinput, qualityinput, genotypeinput).unwrap();
-                let command_random =
-                    randomforestclassification(filepathinput, qualityinput, genotypeinput).unwrap();
-                println!(
-                    "The commands have been finished:{}\n{}\n{}\n",
-                    command_logistic, command_knn, command_random
-                );
-            });
-        }
-    }
+    match &argparse.command {}
 }

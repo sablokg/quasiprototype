@@ -23,7 +23,7 @@ pub enum Commands {
         fastafile: String,
         /// fastq file
         fastqfile: String,
-        ///
+        /// threads for the analysis
         thread: String,
     },
 }

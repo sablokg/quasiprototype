@@ -299,17 +299,3 @@ pub fn export_haplotypes_to_fasta(
     writer.flush()?;
     Ok(())
 }
-
-fn main() -> Result<(), Box<dyn Error>> {
-    let bam_path = "aligned.bam";
-    let vcf_path = "variants.vcf.gz";
-    let ref_fa = "barcode_ref.fa";
-    let out_fa = "phased_haplotypes.fa";
-
-    let reads = load_reads_from_bam(bam_path, vcf_path, 20, 20)?;
-    let graph = build_allele_graph(&reads, 0.2, 5);
-    export_haplotypes_to_fasta(&graph, ref_fa, out_fa)?;
-
-    println!("Exported phased haplotypes to {}", out_fa);
-    Ok(())
-}
